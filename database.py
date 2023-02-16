@@ -35,6 +35,7 @@ def init():
 def close():
     conn.close()
 
+
 def getUser(user_id):
     cursor = conn.execute('''SELECT * FROM Users WHERE ID = ?''', (user_id,))
     row = cursor.fetchone()
@@ -45,15 +46,15 @@ def getUser(user_id):
 
 
 def buy_stock(stock_symbol, stock_balance, stock_price, user_id):
-    #application allows 1 client currently
-    #checks to make sure passed id=1
-    if(getUser(user_id)==None):
+    # application allows 1 client currently
+    # checks to make sure passed id=1
+    if (getUser(user_id) == None):
         return "User"+str(user_id)+" doesn't exist"
     # Check if user has enough money
     user = conn.execute('''SELECT * FROM Users
     WHERE ID = ?;
     ''', (user_id,)).fetchone()
-    
+
     if (user[5] < stock_balance * stock_price):
         return "400 Not enough money"
 
@@ -92,11 +93,10 @@ def buy_stock(stock_symbol, stock_balance, stock_price, user_id):
 
 
 def sell_stock(stock_symbol, stock_balance, stock_price, user_id):
-    #application allows 1 client currently
-    #checks to make sure passed id=1
-    if(getUser(user_id)==None):
+    # application allows 1 client currently
+    # checks to make sure passed id=1
+    if (getUser(user_id) == None):
         return "User"+str(user_id)+" doesn't exist"
-
 
     # Check if user has enough stock
     stock = conn.execute('''SELECT * FROM Stocks
@@ -144,13 +144,13 @@ def list_stocks(user_id):
     ''', (user_id,)).fetchall()
 
     if (rows is None or len(rows) == 0):
-        return "200 ok \n No stocks"
+        return "200 ok \nNo stocks"
 
     stocks = ""
     for row in rows:
         stocks += row[1] + " " + str(row[2]) + " " + str(row[3]) + "\n"
 
-    return "200 ok \n"+ stocks.strip()
+    return "200 ok \n" + stocks.strip()
 
 
 def get_balance(user_id):
